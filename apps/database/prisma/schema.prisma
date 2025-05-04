@@ -1,0 +1,50 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("BACKEND_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma-client"
+}
+
+enum Gender {
+  MAN
+  WOMAN
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Like  Like[] @relation(name: "likeTo")
+  Liked Like[] @relation(name: "likedBy")
+
+  Profile Profile?
+}
+
+model Profile {
+  userId      String   @id
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nickName    String
+  birthdate   DateTime
+  gender      Gender
+  prefecture  Int
+  caption     String?
+  description String?
+}
+
+model Like {
+  likedBy String
+  LikedBy User   @relation(name: "likedBy", fields: [likedBy], references: [id], onDelete: Cascade)
+
+  likeTo String
+  LikeTo User   @relation(name: "likeTo", fields: [likeTo], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique(fields: [likedBy, likeTo])
+}

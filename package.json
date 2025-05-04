@@ -8,7 +8,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "web": "pnpm -F \"web\"",
-    "backend": "pnpm -F \"backend\"",
+    "database": "pnpm -F \"database\"",
     "ui": "pnpm -F \"@repo/ui\"",
     "auth": "pnpm -F \"@repo/auth\""
   },
