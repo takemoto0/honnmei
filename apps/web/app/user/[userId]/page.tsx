@@ -1,9 +1,18 @@
+import { getUserProfile } from "database/user/profile/getUserProfile";
+
 type Params = {
-  params: { userId?: string };
+  params: Promise<{ userId: string }>;
 };
 
 export default async function User({ params }: Params) {
-  const { userId } = params; // userIdを取得
+  const { userId } = await params; // userIdを取得
+  if (!userId) {
+    throw new Error("User ID is required");
+  }
+  console.log("User ID:", userId);
+
+  const test = await getUserProfile(userId);
+
   return (
     <div className="w-full p-4 flex gap-4 flex-col items-center bg-blue-400">
       <div
